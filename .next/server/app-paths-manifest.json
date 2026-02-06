@@ -1,11 +1,8 @@
 {
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/merchant/dashboard/page": "app/merchant/dashboard/page.js",
-  "/auth/login/page": "app/auth/login/page.js",
-  "/auth/register/page": "app/auth/register/page.js",
-  "/books/[id]/page": "app/books/[id]/page.js",
   "/page": "app/page.js",
-  "/unauthorized/page": "app/unauthorized/page.js",
-  "/api/auth/register/route": "app/api/auth/register/route.js",
-  "/admin/page": "app/admin/page.js"
+  "/auth/register/page": "app/auth/register/page.js",
+  "/auth/login/page": "app/auth/login/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/merchant/books/new/page": "app/merchant/books/new/page.js",
+  "/books/[id]/page": "app/books/[id]/page.js"
 }

@@ -24,7 +24,7 @@ export default async function Home({ searchParams }: HomeProps) {
 
     const allBooks = await db.query.books.findMany({
         where: and(...filters),
-        orderBy: (books: any, { desc }: any) => [desc(books.createdAt)],
+        orderBy: (books: any, { asc }: any) => [asc(books.title)],
     });
 
     return (

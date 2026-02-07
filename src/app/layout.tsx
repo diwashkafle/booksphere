@@ -3,6 +3,7 @@ import { Inter, Poppins, Lato } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Providers from "@/components/Providers";
+import AILibrarian from "@/components/AILibrarian";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const poppins = Poppins({
@@ -37,6 +38,7 @@ export default function RootLayout({
                     <footer className="py-10 text-center text-text-secondary border-t border-gray-100 bg-white mt-20">
                         <p>© {new Date().getFullYear()} BookSphere. All rights reserved.</p>
                     </footer>
+                    <AILibrarian />
                 </Providers>
             </body>
         </html>

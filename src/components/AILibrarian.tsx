@@ -5,6 +5,7 @@ import { MessageSquare, X, Send, Bot, User, Loader2, Sparkles } from "lucide-rea
 import { chatWithLibrarian } from "@/app/actions/ai";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import ReactMarkdown from "react-markdown";
 
 function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -66,7 +67,7 @@ export default function AILibrarian() {
 
             {/* Chat Window */}
             {isOpen && (
-                <div className="absolute bottom-16 right-0 w-80 md:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 fade-in duration-300">
+                <div className="absolute bottom-16 right-0 w-[350px] md:w-[400px] h-[550px] bg-white rounded-2xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5 fade-in duration-300">
                     {/* Header */}
                     <div className="bg-primary p-4 text-white flex items-center justify-between">
                         <div className="flex items-center gap-3">
@@ -87,7 +88,7 @@ export default function AILibrarian() {
                     {/* Messages Area */}
                     <div
                         ref={scrollRef}
-                        className="flex-1 h-96 overflow-y-auto p-4 space-y-4 bg-gray-50/50"
+                        className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/50"
                     >
                         {messages.length === 0 && (
                             <div className="text-center py-8 space-y-3">
@@ -131,7 +132,13 @@ export default function AILibrarian() {
                                         ? "bg-primary text-white rounded-tr-none"
                                         : "bg-white text-text-primary rounded-tl-none border border-gray-100"
                                 )}>
-                                    {msg.parts}
+                                    {msg.role === "model" ? (
+                                        <div className="prose prose-sm prose-blue max-w-none prose-p:leading-relaxed prose-li:my-0">
+                                            <ReactMarkdown>{msg.parts}</ReactMarkdown>
+                                        </div>
+                                    ) : (
+                                        msg.parts
+                                    )}
                                 </div>
                             </div>
                         ))}

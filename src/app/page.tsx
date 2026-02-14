@@ -93,22 +93,33 @@ export default async function Home({ searchParams }: HomeProps) {
                             </span>
                         )}
                     </div>
-                    <div className="flex gap-2">
-                        {["Fiction", "Non-Fiction", "Sci-Fi", "Mystery", "Biography", "Business", "History", "Fantasy", "Thriller", "Romance", "Horror", "Poetry", "Self-Help", "Travel", "Cooking", "Art", "Science", "Technology", "Health", "Parenting", "Spirituality", "Comics", "Young Adult"].map((cat) => (
-                            <a
-                                key={cat}
-                                href={`/?category=${cat}`}
-                                className={`text-xs font-bold px-3 py-1.5 rounded-full border transition-all whitespace-nowrap ${category === cat
-                                    ? "bg-primary text-white border-primary"
-                                    : "bg-white text-text-secondary border-gray-200 hover:border-primary hover:text-primary"
-                                    }`}
-                            >
-                                {cat}
-                            </a>
-                        ))}
+                </div>
+
+                <div className="bg-gray-50/50 p-6 rounded-3xl border border-gray-100 mb-10">
+                    <div className="flex items-center gap-2 mb-4">
+                        <span className="text-xs font-bold uppercase tracking-widest text-text-secondary">Explore Genres</span>
+                        <div className="h-px bg-gray-200 flex-1" />
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <div className="flex-1 overflow-x-auto no-scrollbar">
+                            <div className="flex gap-2 min-w-max pb-1">
+                                {["Fiction", "Non-Fiction", "Sci-Fi", "Mystery", "Biography", "Business", "History", "Fantasy", "Thriller", "Romance", "Horror", "Poetry", "Self-Help", "Travel", "Cooking", "Art", "Science", "Technology", "Health", "Parenting", "Spirituality", "Comics", "Young Adult"].map((cat) => (
+                                    <a
+                                        key={cat}
+                                        href={`/?category=${cat}`}
+                                        className={`text-xs font-bold px-4 py-2.5 rounded-xl border transition-all ${category === cat
+                                            ? "bg-primary text-white border-primary shadow-md shadow-primary/20"
+                                            : "bg-white text-text-secondary border-gray-200 hover:border-primary/30 hover:text-primary hover:bg-primary/5 shadow-sm"
+                                            }`}
+                                    >
+                                        {cat}
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
                         {category && (
-                            <a href="/" className="text-xs font-bold px-3 py-1.5 rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200">
-                                Clear
+                            <a href="/" className="flex-shrink-0 text-xs font-bold px-4 py-2.5 rounded-xl bg-red-50 text-red-500 hover:bg-red-100 transition-colors border border-red-100 shadow-sm">
+                                Reset Filter
                             </a>
                         )}
                     </div>

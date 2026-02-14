@@ -46,7 +46,7 @@ export default function RegisterPage() {
         <div className="flex items-center justify-center min-h-[80vh] py-10">
             <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-100">
                 <div className="text-center mb-8">
-                    <img src="/logo.png" alt="BookSphere Logo" className="h-16 w-auto mx-auto mb-4" />
+                    <img src="/logo.png" alt="BookSphere Logo" className="h-20 w-auto mx-auto mb-4" />
                     <h1 className="text-3xl font-heading font-bold text-text-primary">Join BookSphere</h1>
                     <p className="text-text-secondary mt-2">Create your account to start reading</p>
                 </div>

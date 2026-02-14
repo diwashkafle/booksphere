@@ -9,7 +9,9 @@
         "app/merchant/books/edit/[id]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fbooks.ts%22%2C%5B%22deleteBook%22%2C%22createBook%22%2C%22updateBookStatus%22%2C%22updateBook%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!",
         "app/auth/login/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!",
         "app/admin/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fbooks.ts%22%2C%5B%22deleteBook%22%2C%22createBook%22%2C%22updateBookStatus%22%2C%22updateBook%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!",
-        "app/books/[id]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!"
+        "app/books/[id]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!",
+        "app/checkout/[id]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Forders.ts%22%2C%5B%22processMockPayment%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!",
+        "app/books/[id]/reader/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
         "app/page": "action-browser",
@@ -19,7 +21,9 @@
         "app/merchant/books/edit/[id]/page": "action-browser",
         "app/auth/login/page": "action-browser",
         "app/admin/page": "action-browser",
-        "app/books/[id]/page": "action-browser"
+        "app/books/[id]/page": "action-browser",
+        "app/checkout/[id]/page": "action-browser",
+        "app/books/[id]/reader/page": "action-browser"
       }
     },
     "76a6d5c5ec5affc1a0cfeefbfb836d35573222b4": {
@@ -76,6 +80,14 @@
         "app/merchant/dashboard/page": "action-browser",
         "app/merchant/books/edit/[id]/page": "action-browser",
         "app/admin/page": "action-browser"
+      }
+    },
+    "500cc871d12b3443dbbe028330998241102ea07f": {
+      "workers": {
+        "app/checkout/[id]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Forders.ts%22%2C%5B%22processMockPayment%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/checkout/[id]/page": "action-browser"
       }
     }
   },

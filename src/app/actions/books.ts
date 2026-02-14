@@ -27,6 +27,7 @@ export async function createBook(formData: FormData) {
     const price = parseInt(formData.get("price") as string) * 100; // Convert to cents
     const category = formData.get("category") as string;
     const imageUrl = formData.get("imageUrl") as string;
+    const ebookPdfUrl = formData.get("ebookPdfUrl") as string;
     const isEbook = formData.get("isEbook") === "on";
     const isPhysical = formData.get("isPhysical") === "on";
 
@@ -37,6 +38,7 @@ export async function createBook(formData: FormData) {
         price,
         category,
         imageUrl,
+        ebookPdfUrl,
         isEbook,
         isPhysical,
         merchantId: merchant ? merchant.id : "00000000-0000-0000-0000-000000000000", // Fallback for admin
@@ -98,6 +100,7 @@ export async function updateBook(formData: FormData, bookId: string) {
     const price = parseInt(formData.get("price") as string) * 100;
     const category = formData.get("category") as string;
     const imageUrl = formData.get("imageUrl") as string;
+    const ebookPdfUrl = formData.get("ebookPdfUrl") as string;
     const isEbook = formData.get("isEbook") === "on";
     const isPhysical = formData.get("isPhysical") === "on";
 
@@ -109,6 +112,7 @@ export async function updateBook(formData: FormData, bookId: string) {
             price,
             category,
             imageUrl,
+            ebookPdfUrl,
             isEbook,
             isPhysical,
         })

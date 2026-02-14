@@ -30,6 +30,7 @@ export const books = pgTable("books", {
     stock: integer("stock").default(0).notNull(),
     category: text("category"),
     imageUrl: text("image_url"),
+    ebookPdfUrl: text("ebook_pdf_url"),
     isEbook: boolean("is_ebook").default(true).notNull(),
     isPhysical: boolean("is_physical").default(false).notNull(),
     merchantId: uuid("merchant_id").references(() => merchants.id).notNull(),

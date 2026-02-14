@@ -11,6 +11,8 @@ export default function EditBookForm({ book }: { book: any }) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState(book.imageUrl || "");
+    const [ebookPdfUrl, setEbookPdfUrl] = useState(book.ebookPdfUrl || "");
+    const [isEbookSelected, setIsEbookSelected] = useState(book.isEbook || false);
 
     async function handleSubmit(formData: FormData) {
         if (!imageUrl) {
@@ -20,6 +22,7 @@ export default function EditBookForm({ book }: { book: any }) {
 
         setLoading(true);
         formData.set("imageUrl", imageUrl);
+        formData.set("ebookPdfUrl", ebookPdfUrl);
 
         try {
             await updateBook(formData, book.id);
@@ -124,11 +127,17 @@ export default function EditBookForm({ book }: { book: any }) {
                         <textarea name="description" rows={4} defaultValue={book.description || ""} className="input-field"></textarea>
                     </div>
 
-                    <div className="bg-gray-50 p-4 rounded-xl space-y-3">
+                    <div className="bg-gray-50 p-4 rounded-xl space-y-4">
                         <p className="text-sm font-bold text-text-primary mb-1">Formats & Availability</p>
                         <div className="flex flex-wrap gap-6">
                             <label className="flex items-center gap-3 cursor-pointer group">
-                                <input type="checkbox" name="isEbook" defaultChecked={book.isEbook} className="w-5 h-5 rounded border-gray-300 text-primary cursor-pointer" />
+                                <input
+                                    type="checkbox"
+                                    name="isEbook"
+                                    checked={isEbookSelected}
+                                    onChange={(e) => setIsEbookSelected(e.target.checked)}
+                                    className="w-5 h-5 rounded border-gray-300 text-primary cursor-pointer"
+                                />
                                 <span className="text-sm font-medium text-text-secondary group-hover:text-text-primary transition-colors">Available as Ebook</span>
                             </label>
                             <label className="flex items-center gap-3 cursor-pointer group">
@@ -136,6 +145,46 @@ export default function EditBookForm({ book }: { book: any }) {
                                 <span className="text-sm font-medium text-text-secondary group-hover:text-text-primary transition-colors">Available as Physical Copy</span>
                             </label>
                         </div>
+
+                        {isEbookSelected && (
+                            <div className="pt-4 border-t border-gray-200 animate-in fade-in duration-300">
+                                <label className="block text-sm font-medium text-text-secondary mb-3">Ebook PDF File</label>
+                                {ebookPdfUrl ? (
+                                    <div className="flex items-center gap-4 p-3 bg-white rounded-xl border border-primary/20 shadow-sm">
+                                        <div className="w-10 h-10 bg-primary/10 text-primary rounded-lg flex items-center justify-center">
+                                            <Upload className="w-5 h-5" />
+                                        </div>
+                                        <div className="flex-1 overflow-hidden">
+                                            <p className="text-xs font-bold text-text-primary truncate">ebook_ready.pdf</p>
+                                            <p className="text-[10px] text-gray-400">PDF Document uploaded</p>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => setEbookPdfUrl("")}
+                                            className="p-1.5 bg-red-50 text-red-500 rounded-lg hover:bg-red-100 transition-colors"
+                                        >
+                                            <X size={14} />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center p-6 bg-white border-2 border-dashed border-gray-100 rounded-xl hover:border-primary/30 transition-colors">
+                                        <UploadButton
+                                            endpoint="pdfUploader"
+                                            onClientUploadComplete={(res) => {
+                                                setEbookPdfUrl(res[0].url);
+                                            }}
+                                            onUploadError={(error: Error) => {
+                                                alert(`PDF ERROR! ${error.message}`);
+                                            }}
+                                            appearance={{
+                                                button: "bg-primary/10 text-primary border border-primary/20 text-xs font-bold px-4 py-2 rounded-lg hover:bg-primary/20 transition-all",
+                                                allowedContent: "text-[10px] text-gray-400 mt-2"
+                                            }}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
 
                     <button

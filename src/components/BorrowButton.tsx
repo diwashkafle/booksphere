@@ -48,14 +48,14 @@ export default function BorrowButton({ bookId, bookTitle, price }: BorrowButtonP
 
             <div className="flex justify-between items-center text-sm">
                 <span className="text-text-secondary">Fee (20% per week)</span>
-                <span className="font-bold text-secondary">${(borrowPrice / 100).toFixed(2)}</span>
+                <span className="font-bold text-secondary">Rs. {(borrowPrice / 100).toFixed(2)}</span>
             </div>
 
             <button
                 onClick={handleBorrowRedirect}
                 className="w-full bg-secondary text-white py-3 rounded-xl font-bold shadow-lg shadow-secondary/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
             >
-                BORROW FOR ${(borrowPrice / 100).toFixed(2)}
+                BORROW FOR Rs. {(borrowPrice / 100).toFixed(2)}
             </button>
         </div>
     );

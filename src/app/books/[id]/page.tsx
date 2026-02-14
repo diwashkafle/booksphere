@@ -7,6 +7,8 @@ import BorrowButton from "@/components/BorrowButton";
 import { TFIDF } from "@/lib/tfidf";
 import BookCard from "@/components/BookCard";
 import Link from "next/link";
+import { auth } from "@/lib/auth";
+import { lendingRecords, orders } from "@/db/schema";
 
 interface BookDetailPageProps {
     params: { id: string };
@@ -19,6 +21,32 @@ export default async function BookDetailPage({ params }: BookDetailPageProps) {
 
     if (!book) {
         notFound();
+    }
+
+    const session = await auth();
+    let isAuthorized = false;
+
+    if (session) {
+        // Check for active lending record
+        const activeLending = await db.query.lendingRecords.findFirst({
+            where: and(
+                eq(lendingRecords.userId, session.user.id),
+                eq(lendingRecords.bookId, params.id),
+                eq(lendingRecords.status, "active")
+            ),
+        });
+
+        // Check for completed purchase
+        const purchase = await db.query.orders.findFirst({
+            where: and(
+                eq(orders.userId, session.user.id),
+                eq(orders.bookId, params.id),
+                eq(orders.status, "completed"),
+                eq(orders.type, "purchase")
+            ),
+        });
+
+        isAuthorized = !!activeLending || !!purchase || session.user.role === "admin";
     }
 
     // 2. Fetch candidates for "Similar Books"
@@ -92,13 +120,39 @@ export default async function BookDetailPage({ params }: BookDetailPageProps) {
                         {book.isEbook && (
                             <div className="space-y-4 pt-2 border-t border-gray-50 mt-4">
                                 <div className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-1">Ebook Options</div>
-                                <BorrowButton bookId={book.id} bookTitle={book.title} price={book.price} />
-                                <Link
-                                    href={`/checkout/${book.id}?type=purchase&format=ebook&amount=${book.price}`}
-                                    className="w-full bg-primary text-white py-3 rounded-xl font-bold shadow-lg shadow-primary/10 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
-                                >
-                                    BUY EBOOK (LIFETIME)
-                                </Link>
+                                {isAuthorized ? (
+                                    <div className="space-y-4">
+                                        <div className="flex items-center gap-2 p-3 bg-green-50 rounded-xl border border-green-100">
+                                            <ShieldCheck className="w-5 h-5 text-green-600" />
+                                            <span className="text-sm font-bold text-green-700">
+                                                {session?.user?.role === "admin" ? "Admin Access" : "You own this ebook"}
+                                            </span>
+                                        </div>
+                                        {book.ebookPdfUrl ? (
+                                            <Link
+                                                href={`/books/${book.id}/reader`}
+                                                className="w-full bg-green-600 text-white py-4 rounded-xl font-bold shadow-lg shadow-green-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                                            >
+                                                <Book className="w-5 h-5" />
+                                                READ NOW
+                                            </Link>
+                                        ) : (
+                                            <div className="p-4 bg-orange-50 text-orange-600 rounded-xl border border-orange-100 text-xs font-medium italic">
+                                                PDF Reader access will be available once the merchant uploads the file.
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <>
+                                        <BorrowButton bookId={book.id} bookTitle={book.title} price={book.price} />
+                                        <Link
+                                            href={`/checkout/${book.id}?type=purchase&format=ebook&amount=${book.price}`}
+                                            className="w-full bg-primary text-white py-3 rounded-xl font-bold shadow-lg shadow-primary/10 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                                        >
+                                            BUY EBOOK (LIFETIME)
+                                        </Link>
+                                    </>
+                                )}
                             </div>
                         )}
 

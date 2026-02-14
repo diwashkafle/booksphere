@@ -90,7 +90,7 @@ export default async function ProfilePage() {
                                                 </div>
                                             </div>
                                             <div className="text-right">
-                                                <span className="text-sm font-bold text-primary block">${(order.amount / 100).toFixed(2)}</span>
+                                                <span className="text-sm font-bold text-primary block">Rs. {(order.amount / 100).toFixed(2)}</span>
                                                 <span className="text-[10px] font-medium text-gray-400">
                                                     {new Date(order.createdAt).toLocaleDateString()}
                                                 </span>
@@ -103,6 +103,22 @@ export default async function ProfilePage() {
                                                 <p className="text-gray-700 line-clamp-1">{order.shippingAddress}</p>
                                                 <p className="text-gray-500 font-medium">Contact: {order.contactNumber}</p>
                                             </div>
+                                        )}
+
+                                        {order.type === "purchase" && order.format === "ebook" && (
+                                            order.book.ebookPdfUrl ? (
+                                                <Link
+                                                    href={`/books/${order.book.id}/reader`}
+                                                    className="mt-3 inline-flex items-center gap-2 px-4 py-1.5 bg-green-600 text-white rounded-lg text-xs font-bold hover:bg-green-700 transition-colors shadow-sm"
+                                                >
+                                                    <BookOpen size={14} />
+                                                    READ NOW
+                                                </Link>
+                                            ) : (
+                                                <div className="mt-3 text-[10px] text-orange-600 font-medium italic">
+                                                    PDF pending upload
+                                                </div>
+                                            )
                                         )}
                                     </div>
                                 </div>
@@ -142,8 +158,23 @@ export default async function ProfilePage() {
                                             </span>
                                         </div>
                                         <p className="text-xs text-text-secondary mb-2">{borrow.book.author}</p>
-                                        <div className="text-[10px] text-gray-400 mt-auto">
-                                            Expires: {new Date(borrow.expiryDate).toLocaleDateString()}
+                                        <div className="flex justify-between items-end mt-auto">
+                                            <div className="text-[10px] text-gray-400">
+                                                Expires: {new Date(borrow.expiryDate).toLocaleDateString()}
+                                            </div>
+                                            {borrow.book.ebookPdfUrl ? (
+                                                <Link
+                                                    href={`/books/${borrow.book.id}/reader`}
+                                                    className="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary text-white rounded-lg text-xs font-bold hover:bg-secondary/90 transition-colors shadow-sm"
+                                                >
+                                                    <BookOpen size={14} />
+                                                    READ NOW
+                                                </Link>
+                                            ) : (
+                                                <div className="text-[10px] text-orange-600 font-medium italic">
+                                                    PDF pending
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

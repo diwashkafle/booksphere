@@ -48,7 +48,7 @@ export default function AdminBookCard({ book }: AdminBookCardProps) {
                     </div>
                     <h3 className="font-bold text-sm line-clamp-1">{book.title}</h3>
                     <p className="text-xs text-text-secondary mb-2">{book.author}</p>
-                    <p className="font-bold text-primary text-sm">${(book.price / 100).toFixed(2)}</p>
+                    <p className="font-bold text-primary text-sm">Rs. {(book.price / 100).toFixed(2)}</p>
                 </div>
 
                 <div className="flex gap-2 mt-4">

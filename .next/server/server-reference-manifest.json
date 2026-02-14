@@ -3,9 +3,9 @@
     "6faf73e319b0bf91be0b08111fed18504eb42902": {
       "workers": {
         "app/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!",
-        "app/merchant/dashboard/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!",
+        "app/merchant/dashboard/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fbooks.ts%22%2C%5B%22deleteBook%22%2C%22createBook%22%2C%22updateBookStatus%22%2C%22updateBook%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!",
         "app/profile/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!",
-        "app/merchant/books/new/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fbooks.ts%22%2C%5B%22createBook%22%2C%22updateBookStatus%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!"
+        "app/merchant/books/new/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fbooks.ts%22%2C%5B%22deleteBook%22%2C%22createBook%22%2C%22updateBookStatus%22%2C%22updateBook%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
         "app/page": "action-browser",
@@ -16,18 +16,42 @@
     },
     "76a6d5c5ec5affc1a0cfeefbfb836d35573222b4": {
       "workers": {
-        "app/merchant/books/new/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fbooks.ts%22%2C%5B%22createBook%22%2C%22updateBookStatus%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!"
+        "app/merchant/books/new/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fbooks.ts%22%2C%5B%22deleteBook%22%2C%22createBook%22%2C%22updateBookStatus%22%2C%22updateBook%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!",
+        "app/merchant/dashboard/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fbooks.ts%22%2C%5B%22deleteBook%22%2C%22createBook%22%2C%22updateBookStatus%22%2C%22updateBook%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
-        "app/merchant/books/new/page": "action-browser"
+        "app/merchant/books/new/page": "action-browser",
+        "app/merchant/dashboard/page": "action-browser"
       }
     },
     "788ed1cfb51bd8fabeb261ed1adf45c88f605979": {
       "workers": {
-        "app/merchant/books/new/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fbooks.ts%22%2C%5B%22createBook%22%2C%22updateBookStatus%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!"
+        "app/merchant/books/new/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fbooks.ts%22%2C%5B%22deleteBook%22%2C%22createBook%22%2C%22updateBookStatus%22%2C%22updateBook%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!",
+        "app/merchant/dashboard/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fbooks.ts%22%2C%5B%22deleteBook%22%2C%22createBook%22%2C%22updateBookStatus%22%2C%22updateBook%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
-        "app/merchant/books/new/page": "action-browser"
+        "app/merchant/books/new/page": "action-browser",
+        "app/merchant/dashboard/page": "action-browser"
+      }
+    },
+    "44198571941b32626d2c380c2210747733f73d0a": {
+      "workers": {
+        "app/merchant/books/new/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fbooks.ts%22%2C%5B%22deleteBook%22%2C%22createBook%22%2C%22updateBookStatus%22%2C%22updateBook%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!",
+        "app/merchant/dashboard/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fbooks.ts%22%2C%5B%22deleteBook%22%2C%22createBook%22%2C%22updateBookStatus%22%2C%22updateBook%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/merchant/books/new/page": "action-browser",
+        "app/merchant/dashboard/page": "action-browser"
+      }
+    },
+    "995496fa5b9670e093e1799b04620e6423922fd0": {
+      "workers": {
+        "app/merchant/books/new/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fbooks.ts%22%2C%5B%22deleteBook%22%2C%22createBook%22%2C%22updateBookStatus%22%2C%22updateBook%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!",
+        "app/merchant/dashboard/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fbooks.ts%22%2C%5B%22deleteBook%22%2C%22createBook%22%2C%22updateBookStatus%22%2C%22updateBook%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/merchant/books/new/page": "action-browser",
+        "app/merchant/dashboard/page": "action-browser"
       }
     }
   },

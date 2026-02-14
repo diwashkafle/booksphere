@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { Plus, Package, Clock, CheckCircle } from "lucide-react";
 import Link from "next/link";
+import MerchantBookActions from "@/components/MerchantBookActions";
 
 export default async function MerchantDashboard() {
     const session = await auth();
@@ -85,6 +86,7 @@ export default async function MerchantDashboard() {
                                 <th className="px-6 py-4">Price</th>
                                 <th className="px-6 py-4">Status</th>
                                 <th className="px-6 py-4">Created</th>
+                                <th className="px-6 py-4 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
@@ -121,6 +123,9 @@ export default async function MerchantDashboard() {
                                     </td>
                                     <td className="px-6 py-4 text-xs text-text-secondary">
                                         {new Date(book.createdAt).toLocaleDateString()}
+                                    </td>
+                                    <td className="px-6 py-4 text-right">
+                                        <MerchantBookActions bookId={book.id} />
                                     </td>
                                 </tr>
                             ))}

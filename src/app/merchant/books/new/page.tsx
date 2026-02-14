@@ -3,15 +3,25 @@
 import { createBook } from "@/app/actions/books";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ArrowLeft, Upload } from "lucide-react";
+import { ArrowLeft, Upload, Image as ImageIcon, X } from "lucide-react";
 import Link from "next/link";
+import { UploadButton } from "@/utils/uploadthing";
 
 export default function NewBookPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const [imageUrl, setImageUrl] = useState("");
 
     async function handleSubmit(formData: FormData) {
+        if (!imageUrl) {
+            alert("Please upload a book cover image first.");
+            return;
+        }
+
         setLoading(true);
+        // Add the uploaded image URL to the form data
+        formData.set("imageUrl", imageUrl);
+
         try {
             await createBook(formData);
             router.push("/merchant/dashboard");
@@ -33,6 +43,41 @@ export default function NewBookPage() {
                 <h1 className="text-3xl font-heading font-bold mb-6">List a New Book</h1>
 
                 <form action={handleSubmit} className="space-y-6">
+                    {/* Image Upload Section */}
+                    <div className="space-y-2">
+                        <label className="block text-sm font-medium text-text-secondary">Book Cover Image</label>
+                        {imageUrl ? (
+                            <div className="relative w-40 h-56 rounded-xl overflow-hidden shadow-lg border-2 border-primary/20 bg-gray-50">
+                                <img src={imageUrl} alt="Cover preview" className="w-full h-full object-cover" />
+                                <button
+                                    type="button"
+                                    onClick={() => setImageUrl("")}
+                                    className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full shadow-md hover:bg-red-600 transition-colors"
+                                >
+                                    <X size={14} />
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-2xl p-8 bg-gray-50 hover:border-primary/50 transition-colors">
+                                <UploadButton
+                                    endpoint="imageUploader"
+                                    onClientUploadComplete={(res) => {
+                                        setImageUrl(res[0].url);
+                                    }}
+                                    onUploadError={(error: Error) => {
+                                        alert(`ERROR! ${error.message}`);
+                                    }}
+                                    appearance={{
+                                        button: "bg-primary text-white text-sm font-bold px-6 py-2.5 rounded-xl shadow-lg shadow-primary/20",
+                                        allowedContent: "text-[10px] text-gray-400 mt-2"
+                                    }}
+                                />
+                                <p className="mt-4 text-xs text-gray-400">Max file size: 4MB. Optimal size: 1200x1600px.</p>
+                            </div>
+                        )}
+                        <input type="hidden" name="imageUrl" value={imageUrl} />
+                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className="block text-sm font-medium text-text-secondary mb-2">Book Title</label>
@@ -52,6 +97,7 @@ export default function NewBookPage() {
                             <option value="Sci-Fi">Sci-Fi</option>
                             <option value="Mystery">Mystery</option>
                             <option value="Biography">Biography</option>
+                            <option value="Personal Development">Personal Development</option>
                         </select>
                     </div>
 
@@ -59,10 +105,6 @@ export default function NewBookPage() {
                         <div>
                             <label className="block text-sm font-medium text-text-secondary mb-2">Price (USD)</label>
                             <input type="number" step="0.01" name="price" required className="input-field" placeholder="9.99" />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-text-secondary mb-2">Image URL</label>
-                            <input type="url" name="imageUrl" className="input-field" placeholder="https://example.com/cover.jpg" />
                         </div>
                     </div>
 

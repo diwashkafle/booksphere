@@ -30,11 +30,8 @@ const Navbar = () => {
         <nav className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-gray-100 z-50">
             <div className="max-w-7xl mx-auto px-4 md:px-8">
                 <div className="flex justify-between items-center h-16">
-                    <Link href="/" className="flex items-center space-x-2">
-                        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                            <BookOpen className="text-white w-5 h-5" />
-                        </div>
-                        <span className="font-heading font-bold text-xl text-primary">BookSphere</span>
+                    <Link href="/" className="flex items-center">
+                        <img src="/logo.png" alt="BookSphere Logo" className="h-10 w-auto" />
                     </Link>
 
                     {/* Desktop Nav */}

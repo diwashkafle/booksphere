@@ -45,7 +45,14 @@ export default function EditBookForm({ book }: { book: any }) {
                 <h1 className="text-3xl font-heading font-bold mb-2">Edit Book</h1>
                 <p className="text-text-secondary mb-8 text-sm">Update your book details and click save.</p>
 
-                <form action={handleSubmit} className="space-y-6">
+                <form
+                    onSubmit={async (e) => {
+                        e.preventDefault();
+                        const formData = new FormData(e.currentTarget);
+                        await handleSubmit(formData);
+                    }}
+                    className="space-y-6"
+                >
                     {/* Image Upload Section */}
                     <div className="space-y-2">
                         <label className="block text-sm font-medium text-text-secondary">Book Cover Image</label>

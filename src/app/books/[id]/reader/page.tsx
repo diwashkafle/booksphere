@@ -89,74 +89,76 @@ export default async function ReaderPage({ params }: ReaderPageProps) {
     }
 
     return (
-        <div className="h-screen flex flex-col bg-[#1a1a1a] overflow-hidden text-white font-sans">
-            <div className="bg-[#2a2a2a] border-b border-white/10 p-4 flex items-center justify-between shadow-2xl z-10">
+        <div className="h-screen flex flex-col bg-[#f0f2f5] overflow-hidden text-gray-900 font-sans">
+            {/* Navbar / Reader Header */}
+            <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between shadow-sm z-10">
                 <div className="flex items-center gap-5">
                     <Link
                         href={`/books/${id}`}
-                        className="p-2.5 bg-white/5 hover:bg-white/10 rounded-xl border border-white/5 text-white/70 hover:text-white transition-all group"
+                        className="p-2.5 bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-200 text-gray-500 hover:text-primary transition-all group"
+                        title="Back to Details"
                     >
                         <ArrowLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
                     </Link>
                     <div className="flex items-center gap-4">
                         {book.imageUrl && (
-                            <img src={book.imageUrl} alt="" className="w-10 h-14 object-cover rounded shadow-md border border-white/10 hidden md:block" />
+                            <img src={book.imageUrl} alt="" className="w-10 h-14 object-cover rounded shadow-sm border border-gray-100 hidden md:block" />
                         )}
                         <div>
-                            <h2 className="font-bold text-base leading-tight truncate max-w-[200px] md:max-w-md">{book.title}</h2>
-                            <p className="text-white/40 text-[10px] uppercase font-bold tracking-[0.2em] mt-1">{book.author}</p>
+                            <h2 className="font-bold text-lg leading-tight text-gray-900 truncate max-w-[200px] md:max-w-md">{book.title}</h2>
+                            <p className="text-primary text-[10px] uppercase font-black tracking-[0.3em] mt-1">{book.author}</p>
                         </div>
                     </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-green-500/10 text-green-400 rounded-xl border border-green-500/20 text-[11px] font-bold uppercase tracking-wider">
-                        <Lock className="w-3.5 h-3.5" />
+                    <div className="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 rounded-xl border border-green-100 text-[11px] font-bold uppercase tracking-wider shadow-sm">
+                        <ShieldCheck className="w-3.5 h-3.5" />
                         Authorized View
                     </div>
-                    <a
-                        href={book.ebookPdfUrl}
-                        download
-                        target="_blank"
-                        className="p-2.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-xl border border-primary/20 transition-all"
-                    >
-                        <FileText className="w-5 h-5" />
-                    </a>
                 </div>
             </div>
 
+            {/* Main Content Area */}
             <div className="flex-1 flex overflow-hidden relative">
-                <main className="flex-1 bg-black relative">
-                    <iframe
-                        src={`${book.ebookPdfUrl}#view=FitH&toolbar=1`}
-                        className="w-full h-full border-none"
-                        title={book.title}
-                    />
+                {/* PDF Viewer Container - CLEAN LIGHT THEME */}
+                <main className="flex-1 bg-gray-200/50 relative p-4 md:p-10 overflow-auto flex justify-center">
+                    <div className="w-full max-w-5xl h-full bg-white shadow-2xl rounded-sm overflow-hidden flex flex-col">
+                        <div className="flex-1 relative">
+                            <iframe
+                                src={`${book.ebookPdfUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
+                                className="w-full h-full border-none"
+                                title={book.title}
+                            />
+                            {/* Protection Overlay (Optional: makes it harder to right-click) */}
+                            <div className="absolute inset-0 pointer-events-none border-[12px] border-white/5" />
+                        </div>
+                    </div>
                 </main>
 
-                <aside className="w-80 bg-[#252525] border-l border-white/5 p-6 hidden lg:flex flex-col gap-8 overflow-y-auto">
+                {/* Sidebar - Quick Info */}
+                <aside className="w-80 bg-white border-l border-gray-100 p-8 hidden lg:flex flex-col gap-10 overflow-y-auto shadow-[-10px_0_30px_rgba(0,0,0,0.02)]">
                     <div>
-                        <h3 className="text-xs font-bold text-white/30 uppercase tracking-[0.2em] mb-4">You are reading</h3>
-                        <p className="text-sm text-white/80 leading-relaxed italic border-l-2 border-primary/30 pl-4 py-1">
-                            {book.description?.slice(0, 200)}...
+                        <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">Book Overview</h3>
+                        <p className="text-sm text-gray-600 leading-relaxed italic border-l-4 border-primary/20 pl-4 py-1">
+                            {book.description?.slice(0, 250)}...
                         </p>
                     </div>
 
-                    <div className="space-y-4">
-                        <h3 className="text-xs font-bold text-white/30 uppercase tracking-[0.2em]">Reading Progress</h3>
-                        <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-                            <div className="h-full w-1/3 bg-primary/50" />
-                        </div>
-                    </div>
-
-                    <div className="mt-auto pt-6 border-t border-white/5">
-                        <div className="flex items-center gap-3 p-4 bg-white/5 rounded-2xl border border-white/5">
-                            <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
-                                <ShieldCheck className="w-6 h-6" />
+                    <div className="mt-auto pt-8 border-t border-gray-100">
+                        <div className="p-5 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col gap-4">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+                                    <Lock className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <p className="text-xs font-bold text-gray-900">Digital Rights Active</p>
+                                    <p className="text-[10px] text-gray-400">Offline access restricted</p>
+                                </div>
                             </div>
-                            <div>
-                                <p className="text-xs font-bold">DRM Protected</p>
-                                <p className="text-[10px] text-white/40">Exclusive to {session.user.name}</p>
+                            <div className="text-[9px] text-gray-400 leading-normal">
+                                Licensed to <span className="text-gray-700 font-bold">{session.user.name}</span>.<br />
+                                Unauthorized distribution is prohibited.
                             </div>
                         </div>
                     </div>

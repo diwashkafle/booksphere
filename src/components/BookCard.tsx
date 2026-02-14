@@ -8,9 +8,10 @@ interface BookCardProps {
     price: number;
     imageUrl?: string | null;
     category?: string | null;
+    isAuthorized?: boolean;
 }
 
-const BookCard = ({ id, title, author, price, imageUrl, category }: BookCardProps) => {
+const BookCard = ({ id, title, author, price, imageUrl, category, isAuthorized }: BookCardProps) => {
     return (
         <div className="card group hover:scale-[1.02] transition-all duration-300">
             <div className="aspect-[3/4] bg-gray-100 relative overflow-hidden">
@@ -28,10 +29,10 @@ const BookCard = ({ id, title, author, price, imageUrl, category }: BookCardProp
                 )}
                 <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors flex items-center justify-center">
                     <Link
-                        href={`/books/${id}`}
+                        href={isAuthorized ? `/books/${id}/reader` : `/books/${id}`}
                         className="opacity-0 group-hover:opacity-100 bg-white text-primary px-4 py-2 rounded-full font-semibold shadow-lg transition-all transform translate-y-4 group-hover:translate-y-0"
                     >
-                        View Details
+                        {isAuthorized ? "Start Reading" : "View Details"}
                     </Link>
                 </div>
             </div>
@@ -45,9 +46,19 @@ const BookCard = ({ id, title, author, price, imageUrl, category }: BookCardProp
                 <p className="text-text-secondary text-sm mb-4 line-clamp-1">{author}</p>
                 <div className="flex items-center justify-between">
                     <span className="font-bold text-primary font-heading">Rs. {(price / 100).toFixed(2)}</span>
-                    <Link href={`/books/${id}`} className="text-xs font-bold text-text-secondary hover:text-primary transition-colors">
-                        BORROW →
-                    </Link>
+                    {isAuthorized ? (
+                        <Link
+                            href={`/books/${id}/reader`}
+                            className="text-[10px] font-black text-green-600 bg-green-50 px-2.5 py-1.5 rounded-lg border border-green-100 hover:bg-green-100 transition-all flex items-center gap-1.5 uppercase tracking-widest"
+                        >
+                            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                            Read Now
+                        </Link>
+                    ) : (
+                        <Link href={`/books/${id}`} className="text-xs font-bold text-text-secondary hover:text-primary transition-colors">
+                            BORROW →
+                        </Link>
+                    )}
                 </div>
             </div>
         </div>

@@ -45,7 +45,14 @@ export default function NewBookPage() {
             <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
                 <h1 className="text-3xl font-heading font-bold mb-6">List a New Book</h1>
 
-                <form action={handleSubmit} className="space-y-6">
+                <form
+                    onSubmit={async (e) => {
+                        e.preventDefault();
+                        const formData = new FormData(e.currentTarget);
+                        await handleSubmit(formData);
+                    }}
+                    className="space-y-6"
+                >
                     {/* Image Upload Section */}
                     <div className="space-y-2">
                         <label className="block text-sm font-medium text-text-secondary">Book Cover Image</label>
@@ -113,6 +120,7 @@ export default function NewBookPage() {
                             <option value="Cooking">Cooking</option>
                             <option value="Science">Science</option>
                             <option value="Technology">Technology</option>
+                            <option value="Technology">Coding</option>
                         </select>
                     </div>
 

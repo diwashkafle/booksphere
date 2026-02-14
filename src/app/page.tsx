@@ -1,10 +1,11 @@
 import { db } from "@/db";
-import { books } from "@/db/schema";
+import { books, lendingRecords, orders } from "@/db/schema";
 import { ilike, or, eq, and } from "drizzle-orm";
 import BookCard from "@/components/BookCard";
 import SearchBar from "@/components/SearchBar";
 import { TFIDF } from "@/lib/tfidf";
 import { Sparkles } from "lucide-react";
+import { auth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -13,15 +14,42 @@ interface HomeProps {
 }
 
 export default async function Home({ searchParams }: HomeProps) {
+    const session = await auth();
     const query = searchParams.q;
     const category = searchParams.category;
 
-    // 1. Fetch all published books
+    // 1. Fetch user's active borrows/purchases if logged in
+    let userBorrowedBookIds: Set<string> = new Set();
+    if (session?.user?.id) {
+        const [activeBorrows, completedPurchases] = await Promise.all([
+            db.query.lendingRecords.findMany({
+                where: and(
+                    eq(lendingRecords.userId, session.user.id),
+                    eq(lendingRecords.status, "active")
+                ),
+                columns: { bookId: true }
+            }),
+            db.query.orders.findMany({
+                where: and(
+                    eq(orders.userId, session.user.id),
+                    eq(orders.status, "completed"),
+                    eq(orders.type, "purchase")
+                ),
+                columns: { bookId: true }
+            })
+        ]);
+
+        activeBorrows.forEach((r: { bookId: string }) => userBorrowedBookIds.add(r.bookId));
+        completedPurchases.forEach((o: { bookId: string }) => userBorrowedBookIds.add(o.bookId));
+    }
+
+    // 2. Fetch all published books
     let allBooksRaw = await db.query.books.findMany({
         where: eq(books.status, "published"),
     });
 
     let displayBooks = allBooksRaw;
+    // ... (rest of filtering/search logic remains same)
 
     // 2. Filter by category if selected
     if (category) {
@@ -136,6 +164,7 @@ export default async function Home({ searchParams }: HomeProps) {
                                 price={book.price}
                                 imageUrl={book.imageUrl}
                                 category={book.category}
+                                isAuthorized={userBorrowedBookIds.has(book.id)}
                             />
                         ))}
                     </div>

@@ -1,7 +1,0 @@
-{
-  "/admin/page": "app/admin/page.js",
-  "/page": "app/page.js",
-  "/profile/page": "app/profile/page.js",
-  "/books/[id]/reader/page": "app/books/[id]/reader/page.js",
-  "/merchant/dashboard/page": "app/merchant/dashboard/page.js"
-}

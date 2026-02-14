@@ -30,6 +30,8 @@ export const books = pgTable("books", {
     stock: integer("stock").default(0).notNull(),
     category: text("category"),
     imageUrl: text("image_url"),
+    isEbook: boolean("is_ebook").default(true).notNull(),
+    isPhysical: boolean("is_physical").default(false).notNull(),
     merchantId: uuid("merchant_id").references(() => merchants.id).notNull(),
     status: bookStatusEnum("status").default("pending").notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -50,6 +52,9 @@ export const orders = pgTable("orders", {
     bookId: uuid("book_id").references(() => books.id).notNull(),
     amount: integer("amount").notNull(),
     type: text("type", { enum: ["purchase", "borrow"] }).default("purchase").notNull(),
+    format: text("format", { enum: ["ebook", "physical"] }).default("ebook").notNull(),
+    shippingAddress: text("shipping_address"),
+    contactNumber: text("contact_number"),
     status: text("status", { enum: ["completed", "failed"] }).default("completed").notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
 });

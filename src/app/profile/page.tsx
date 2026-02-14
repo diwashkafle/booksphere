@@ -77,21 +77,33 @@ export default async function ProfilePage() {
                                     </div>
                                     <div className="flex-1">
                                         <div className="flex justify-between items-start mb-1">
-                                            <h4 className="font-bold text-sm line-clamp-1">{order.book.title}</h4>
-                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${order.type === 'purchase'
-                                                    ? 'bg-primary/10 text-primary'
-                                                    : 'bg-secondary/10 text-secondary'
-                                                }`}>
-                                                {order.type}
-                                            </span>
+                                            <div className="flex flex-col">
+                                                <h4 className="font-bold text-sm line-clamp-1">{order.book.title}</h4>
+                                                <div className="flex gap-2 mt-1">
+                                                    <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider ${order.type === 'purchase' ? 'bg-primary/10 text-primary' : 'bg-secondary/10 text-secondary'
+                                                        }`}>
+                                                        {order.type}
+                                                    </span>
+                                                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider bg-gray-100 text-gray-600">
+                                                        {order.format}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className="text-right">
+                                                <span className="text-sm font-bold text-primary block">${(order.amount / 100).toFixed(2)}</span>
+                                                <span className="text-[10px] font-medium text-gray-400">
+                                                    {new Date(order.createdAt).toLocaleDateString()}
+                                                </span>
+                                            </div>
                                         </div>
-                                        <p className="text-xs text-text-secondary mb-2">{order.book.author}</p>
-                                        <div className="flex items-center justify-between mt-auto">
-                                            <span className="text-[10px] font-medium text-gray-400">
-                                                {new Date(order.createdAt).toLocaleDateString()}
-                                            </span>
-                                            <span className="text-sm font-bold text-primary">${(order.amount / 100).toFixed(2)}</span>
-                                        </div>
+
+                                        {order.format === "physical" && (
+                                            <div className="mt-3 p-2 bg-orange-50/50 rounded-lg border border-orange-100 text-[10px] space-y-1">
+                                                <p className="font-bold text-orange-800 uppercase tracking-tighter">Shipping to:</p>
+                                                <p className="text-gray-700 line-clamp-1">{order.shippingAddress}</p>
+                                                <p className="text-gray-500 font-medium">Contact: {order.contactNumber}</p>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             ))

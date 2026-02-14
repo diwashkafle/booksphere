@@ -3,6 +3,10 @@ import { books } from "@/db/schema";
 import { ilike, or, eq, and } from "drizzle-orm";
 import BookCard from "@/components/BookCard";
 import SearchBar from "@/components/SearchBar";
+import { TFIDF } from "@/lib/tfidf";
+import { Sparkles } from "lucide-react";
+
+export const dynamic = "force-dynamic";
 
 interface HomeProps {
     searchParams: { q?: string; category?: string };
@@ -12,20 +16,55 @@ export default async function Home({ searchParams }: HomeProps) {
     const query = searchParams.q;
     const category = searchParams.category;
 
-    const filters = [eq(books.status, "published")];
-
-    if (query) {
-        filters.push(or(ilike(books.title, `%${query}%`), ilike(books.author, `%${query}%`)) as any);
-    }
-
-    if (category) {
-        filters.push(eq(books.category, category));
-    }
-
-    const allBooks = await db.query.books.findMany({
-        where: and(...filters),
-        orderBy: (books: any, { asc }: any) => [asc(books.title)],
+    // 1. Fetch all published books
+    let allBooksRaw = await db.query.books.findMany({
+        where: eq(books.status, "published"),
     });
+
+    let displayBooks = allBooksRaw;
+
+    // 2. Filter by category if selected
+    if (category) {
+        displayBooks = displayBooks.filter((b: any) => b.category === category);
+    }
+
+    // 3. Intelligent Search Logic
+    let isSmartSearch = false;
+    if (query) {
+        const queryLower = query.toLowerCase();
+
+        // Prepare data for TF-IDF
+        const searchDocs = displayBooks.map((b: any) =>
+            `${b.title} ${b.author} ${b.description || ""} ${b.category || ""}`.toLowerCase()
+        );
+
+        const tfidf = new TFIDF(searchDocs);
+
+        // Use TFIDF for the actual ranking
+        const topIndices = tfidf.getSimilarDocuments(query, displayBooks.length);
+
+        // Re-calculate displayBooks based on intelligent ranking
+        const finalResults = displayBooks
+            .map((b: any, i: number) => {
+                const isDirectMatch = b.title.toLowerCase().includes(queryLower) || b.author.toLowerCase().includes(queryLower);
+                const manualBonus = isDirectMatch ? 50 : 0;
+
+                // Find if this book index is in the TFIDF results and get its position
+                const tfidfRank = topIndices.indexOf(i);
+                // Inverse rank score (the higher the rank, the higher the score)
+                const tfidfScore = tfidfRank !== -1 ? (topIndices.length - tfidfRank) : 0;
+
+                return { ...b, totalScore: manualBonus + tfidfScore };
+            })
+            .filter((b: any) => b.totalScore > 0)
+            .sort((a: any, b: any) => (b.totalScore || 0) - (a.totalScore || 0));
+
+        displayBooks = finalResults;
+        isSmartSearch = true;
+    } else {
+        // Default sort by title if no search
+        displayBooks = [...displayBooks].sort((a: any, b: any) => a.title.localeCompare(b.title));
+    }
 
     return (
         <div className="space-y-12">
@@ -43,9 +82,17 @@ export default async function Home({ searchParams }: HomeProps) {
             {/* Book Grid */}
             <section>
                 <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-2xl font-bold font-heading">
-                        {query ? `Search Results for "${query}"` : "Featured Books"}
-                    </h2>
+                    <div className="flex items-center gap-3">
+                        <h2 className="text-2xl font-bold font-heading">
+                            {query ? `Results for "${query}"` : "Featured Books"}
+                        </h2>
+                        {isSmartSearch && query && (
+                            <span className="flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded-full uppercase tracking-tighter border border-primary/20">
+                                <Sparkles className="w-3 h-3" />
+                                Smart Semantic Ranking
+                            </span>
+                        )}
+                    </div>
                     <div className="flex gap-2">
                         {["Fiction", "Non-Fiction", "Sci-Fi", "Mystery"].map((cat) => (
                             <a
@@ -67,9 +114,9 @@ export default async function Home({ searchParams }: HomeProps) {
                     </div>
                 </div>
 
-                {allBooks.length > 0 ? (
+                {displayBooks.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                        {allBooks.map((book: any) => (
+                        {displayBooks.map((book: any) => (
                             <BookCard
                                 key={book.id}
                                 id={book.id}

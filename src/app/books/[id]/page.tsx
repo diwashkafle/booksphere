@@ -83,24 +83,43 @@ export default async function BookDetailPage({ params }: BookDetailPageProps) {
 
                     <div className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm space-y-4">
                         <div className="flex items-center justify-between">
-                            <span className="text-text-secondary font-medium">Borrowing Price</span>
+                            <span className="text-text-secondary font-medium">Standard Price</span>
                             <span className="text-3xl font-heading font-bold text-primary">
                                 ${(book.price / 100).toFixed(2)}
                             </span>
                         </div>
-                        <BorrowButton bookId={book.id} bookTitle={book.title} price={book.price} />
 
-                        <div className="pt-2">
-                            <Link
-                                href={`/checkout/${book.id}?type=purchase&amount=${book.price}`}
-                                className="w-full bg-primary text-white py-3 rounded-xl font-bold shadow-lg shadow-primary/10 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
-                            >
-                                BUY EBOOK FOR LIFETIME ACCESS
-                            </Link>
-                        </div>
+                        {book.isEbook && (
+                            <div className="space-y-4 pt-2 border-t border-gray-50 mt-4">
+                                <div className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-1">Ebook Options</div>
+                                <BorrowButton bookId={book.id} bookTitle={book.title} price={book.price} />
+                                <Link
+                                    href={`/checkout/${book.id}?type=purchase&format=ebook&amount=${book.price}`}
+                                    className="w-full bg-primary text-white py-3 rounded-xl font-bold shadow-lg shadow-primary/10 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                                >
+                                    BUY EBOOK (LIFETIME)
+                                </Link>
+                            </div>
+                        )}
+
+                        {book.isPhysical && (
+                            <div className="space-y-4 pt-2 border-t border-gray-50 mt-4">
+                                <div className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-1">Physical Copy</div>
+                                <Link
+                                    href={`/checkout/${book.id}?type=purchase&format=physical&amount=${book.price}`}
+                                    className="w-full bg-orange-600 text-white py-3 rounded-xl font-bold shadow-lg shadow-orange-600/10 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                                >
+                                    BUY PHYSICAL BOOK
+                                </Link>
+                            </div>
+                        )}
+
+                        {!book.isEbook && !book.isPhysical && (
+                            <p className="text-red-500 text-sm italic font-medium">This book is currently unavailable for purchase.</p>
+                        )}
 
                         <p className="text-[10px] text-center text-text-secondary">
-                            Choose between a flexible borrowing period or lifetime ownership.
+                            {book.isPhysical && "Physical books require shipping address and contact info."}
                         </p>
                     </div>
 

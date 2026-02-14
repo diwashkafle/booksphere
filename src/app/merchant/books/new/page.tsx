@@ -71,6 +71,21 @@ export default function NewBookPage() {
                         <textarea name="description" rows={4} className="input-field" placeholder="Enter book synopsis..."></textarea>
                     </div>
 
+                    <div className="bg-gray-50 p-4 rounded-xl space-y-3">
+                        <p className="text-sm font-bold text-text-primary mb-1">Formats & Availability</p>
+                        <div className="flex flex-wrap gap-6">
+                            <label className="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" name="isEbook" defaultChecked className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20 cursor-pointer" />
+                                <span className="text-sm font-medium text-text-secondary group-hover:text-text-primary transition-colors">Available as Ebook</span>
+                            </label>
+                            <label className="flex items-center gap-3 cursor-pointer group">
+                                <input type="checkbox" name="isPhysical" className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20 cursor-pointer" />
+                                <span className="text-sm font-medium text-text-secondary group-hover:text-text-primary transition-colors">Available as Physical Copy</span>
+                            </label>
+                        </div>
+                        <p className="text-[10px] text-gray-400 italic">Note: Borrowing is only enabled for books with an Ebook version.</p>
+                    </div>
+
                     <button type="submit" disabled={loading} className="w-full btn-primary py-3 font-semibold shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
                         {loading ? "Listing Book..." : (
                             <>

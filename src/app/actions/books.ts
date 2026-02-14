@@ -27,6 +27,8 @@ export async function createBook(formData: FormData) {
     const price = parseInt(formData.get("price") as string) * 100; // Convert to cents
     const category = formData.get("category") as string;
     const imageUrl = formData.get("imageUrl") as string;
+    const isEbook = formData.get("isEbook") === "on";
+    const isPhysical = formData.get("isPhysical") === "on";
 
     await db.insert(books).values({
         title,
@@ -35,6 +37,8 @@ export async function createBook(formData: FormData) {
         price,
         category,
         imageUrl,
+        isEbook,
+        isPhysical,
         merchantId: merchant ? merchant.id : "00000000-0000-0000-0000-000000000000", // Fallback for admin
         status: "pending",
     });

@@ -24,11 +24,15 @@ export async function chatWithLibrarian(message: string, history: { role: string
                 category: true,
                 description: true,
                 price: true,
+                isEbook: true,
+                isPhysical: true,
             }
         });
 
         const booksContextFull = allBooks.map((b: any) =>
-            `- [ID: ${b.id}] ${b.title} by ${b.author} [Category: ${b.category}] ($${(b.price / 100).toFixed(2)}) Description: ${b.description}`
+            `- [ID: ${b.id}] ${b.title} by ${b.author} [Category: ${b.category}] ($${(b.price / 100).toFixed(2)}) 
+              Formats: ${[b.isEbook ? "Ebook" : null, b.isPhysical ? "Physical" : null].filter(Boolean).join(", ")}
+              Description: ${b.description}`
         );
 
         // 2. Perform Hybrid Search (TF/IDF)

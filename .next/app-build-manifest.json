@@ -16,20 +16,20 @@
       "static/chunks/main-app.js",
       "static/chunks/app/error.js"
     ],
-    "/books/[id]/page": [
+    "/merchant/dashboard/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/books/[id]/page.js"
+      "static/chunks/app/merchant/dashboard/page.js"
     ],
     "/profile/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/profile/page.js"
     ],
-    "/checkout/[id]/page": [
+    "/merchant/books/new/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/checkout/[id]/page.js"
+      "static/chunks/app/merchant/books/new/page.js"
     ]
   }
 }

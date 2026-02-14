@@ -13,6 +13,7 @@ export default function CheckoutPage() {
 
     // Get transaction details from URL
     const type = searchParams.get("type") as "purchase" | "borrow" || "purchase";
+    const format = searchParams.get("format") as "ebook" | "physical" || "ebook";
     const amount = parseInt(searchParams.get("amount") || "1999");
     const weeks = parseInt(searchParams.get("weeks") || "0");
 
@@ -22,18 +23,29 @@ export default function CheckoutPage() {
         cardNumber: "4242 4242 4242 4242",
         expiry: "12/26",
         cvv: "123",
-        name: "Demo User"
+        name: "Demo User",
+        shippingAddress: "",
+        contactNumber: ""
     });
 
     const handlePayment = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (format === "physical" && (!formData.shippingAddress || !formData.contactNumber)) {
+            alert("Please provide shipping address and contact number for physical delivery.");
+            return;
+        }
+
         setIsProcessing(true);
 
         const result = await processMockPayment(
             params.id as string,
             amount,
             type,
-            type === "borrow" ? weeks * 7 : undefined
+            type === "borrow" ? weeks * 7 : undefined,
+            format,
+            formData.shippingAddress,
+            formData.contactNumber
         );
 
         if (result.success) {
@@ -55,7 +67,8 @@ export default function CheckoutPage() {
                 </div>
                 <h1 className="text-3xl font-heading font-bold mb-4">Payment Successful!</h1>
                 <p className="text-text-secondary mb-8">
-                    Your {type} transaction has been processed. You can now access your ebook in your library.
+                    Your {type} transaction for the {format} version has been processed.
+                    {format === 'ebook' ? "You can now access it in your library." : "We will begin preparing your delivery immediately."}
                 </p>
                 <div className="animate-pulse text-sm text-primary font-medium">
                     Redirecting to your library...
@@ -79,7 +92,9 @@ export default function CheckoutPage() {
                         <p className="text-text-secondary">
                             {type === "borrow"
                                 ? `Borrowing this book for ${weeks} week${weeks > 1 ? 's' : ''}.`
-                                : "Securing lifetime access to this ebook."}
+                                : format === "physical"
+                                    ? "Ordering a high-quality physical copy."
+                                    : "Securing lifetime access to this digital ebook."}
                         </p>
                     </div>
 
@@ -131,6 +146,34 @@ export default function CheckoutPage() {
                                     </div>
                                 </label>
                             </div>
+
+                            {format === "physical" && (
+                                <div className="space-y-4 pt-4 border-t border-gray-100 animate-in slide-in-from-top-2 duration-300">
+                                    <h3 className="text-lg font-bold font-heading">Shipping Information</h3>
+                                    <label className="block">
+                                        <span className="text-sm font-semibold text-text-primary ml-1">Delivery Address</span>
+                                        <textarea
+                                            value={formData.shippingAddress}
+                                            onChange={(e) => setFormData({ ...formData, shippingAddress: e.target.value })}
+                                            required
+                                            rows={3}
+                                            className="w-full mt-1 bg-white border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                                            placeholder="House No, Street, City, ZIP Code"
+                                        />
+                                    </label>
+                                    <label className="block">
+                                        <span className="text-sm font-semibold text-text-primary ml-1">Contact Number</span>
+                                        <input
+                                            type="tel"
+                                            value={formData.contactNumber}
+                                            onChange={(e) => setFormData({ ...formData, contactNumber: e.target.value })}
+                                            required
+                                            className="w-full mt-1 bg-white border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                                            placeholder="+1 (555) 000-0000"
+                                        />
+                                    </label>
+                                </div>
+                            )}
                         </div>
 
                         <button
@@ -165,7 +208,7 @@ export default function CheckoutPage() {
                                 <span>
                                     {type === "borrow"
                                         ? `Borrow Period (${weeks} week${weeks > 1 ? 's' : ''})`
-                                        : "Digital Ebook (Lifetime Access)"}
+                                        : format === "physical" ? "Physical Copy" : "Digital Ebook (Lifetime)"}
                                 </span>
                                 <span className="text-text-primary font-medium">${(amount / 100).toFixed(2)}</span>
                             </div>
@@ -185,9 +228,13 @@ export default function CheckoutPage() {
                                 <CheckCircle2 size={20} />
                             </div>
                             <div>
-                                <h4 className="text-sm font-bold mb-1">Instant Delivery</h4>
+                                <h4 className="text-sm font-bold mb-1">
+                                    {format === "physical" ? "Standard Delivery" : "Instant Delivery"}
+                                </h4>
                                 <p className="text-[11px] text-text-secondary leading-tight">
-                                    The download link will be available in your profile immediately after payment.
+                                    {format === "physical"
+                                        ? "Estimated arrival: 3-5 business days."
+                                        : "The download link will be available in your profile immediately after payment."}
                                 </p>
                             </div>
                         </div>

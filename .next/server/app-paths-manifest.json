@@ -1,7 +1,7 @@
 {
+  "/merchant/books/new/page": "app/merchant/books/new/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/profile/page": "app/profile/page.js",
   "/page": "app/page.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/checkout/[id]/page": "app/checkout/[id]/page.js",
-  "/books/[id]/page": "app/books/[id]/page.js"
+  "/merchant/dashboard/page": "app/merchant/dashboard/page.js"
 }

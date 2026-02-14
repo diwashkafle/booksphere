@@ -10,7 +10,10 @@ export async function processMockPayment(
     bookId: string,
     amount: number,
     type: "purchase" | "borrow" = "purchase",
-    durationDays?: number
+    durationDays?: number,
+    format: "ebook" | "physical" = "ebook",
+    shippingAddress?: string,
+    contactNumber?: string
 ) {
     const session = await auth();
 
@@ -37,6 +40,9 @@ export async function processMockPayment(
             bookId: book.id,
             amount: amount,
             type: type,
+            format: format,
+            shippingAddress: shippingAddress,
+            contactNumber: contactNumber,
             status: "completed",
         });
 

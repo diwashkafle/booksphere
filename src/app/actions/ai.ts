@@ -28,7 +28,7 @@ export async function chatWithLibrarian(message: string, history: { role: string
         });
 
         const booksContextFull = allBooks.map((b: any) =>
-            `- ${b.title} by ${b.author} [Category: ${b.category}] ($${(b.price / 100).toFixed(2)}) Description: ${b.description}`
+            `- [ID: ${b.id}] ${b.title} by ${b.author} [Category: ${b.category}] ($${(b.price / 100).toFixed(2)}) Description: ${b.description}`
         );
 
         // 2. Perform Hybrid Search (TF/IDF)
@@ -52,18 +52,19 @@ export async function chatWithLibrarian(message: string, history: { role: string
       
       ROLE: You are an expert curator with a warm, encouraging, and slightly sophisticated tone. You love helping people find the perfect companion in a book.
       
-      HERE IS OUR COLLECTION (Focus on the candidates if provided):
+      HERE IS OUR COLLECTION:
       ${focusedContext}
       
       - IF A USER ASKS FOR A BOOK NOT IN THIS LIST:
         1. Acknowledge that while that book is a classic/great choice, we don't currently have it in our local collection. 
-        2. IMMEDIATELY suggest the best alternative from WITHOUT the "OUR CURRENT COLLECTION" list above that matches the vibe or genre.
+        2. IMMEDIATELY suggest the best alternative from WITHIN the provided list above that matches the vibe or genre.
       
       GUIDELINES:
       - Always refer to yourself as the BookSphere Librarian.
       - Use phrases like "In our collection...", "I would recommend...", "A wonderful choice would be...".
       - Keep responses helpful but concise.
       - Use Markdown for bolding titles and creating lists.
+      - IMPORTANT: When recommending a book from the list, ALWAYS provide a link to it using this exact format: [Title](/books/ID). Replace ID with the actual ID provided for that book.
       - If they ask for prices, mention the specific prices from the list.
     `;
 

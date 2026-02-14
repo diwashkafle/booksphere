@@ -1,16 +1,21 @@
 "use server";
 
 import { db } from "@/db";
-import { orders, books } from "@/db/schema";
+import { orders, books, lendingRecords } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export async function processMockPayment(bookId: string, amount: number) {
+export async function processMockPayment(
+    bookId: string,
+    amount: number,
+    type: "purchase" | "borrow" = "purchase",
+    durationDays?: number
+) {
     const session = await auth();
 
     if (!session?.user?.id) {
-        return { error: "You must be logged in to purchase books." };
+        return { error: "You must be logged in to complete this transaction." };
     }
 
     try {
@@ -31,8 +36,22 @@ export async function processMockPayment(bookId: string, amount: number) {
             userId: session.user.id,
             bookId: book.id,
             amount: amount,
+            type: type,
             status: "completed",
         });
+
+        // 4. If borrow, also create a lending record
+        if (type === "borrow" && durationDays) {
+            const expiryDate = new Date();
+            expiryDate.setDate(expiryDate.getDate() + durationDays);
+
+            await db.insert(lendingRecords).values({
+                userId: session.user.id,
+                bookId: book.id,
+                expiryDate,
+                status: "active",
+            });
+        }
 
         revalidatePath("/profile");
         revalidatePath(`/books/${bookId}`);

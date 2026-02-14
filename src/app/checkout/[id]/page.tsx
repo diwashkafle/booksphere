@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { CreditCard, ShieldCheck, Lock, ArrowLeft, Loader2, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { processMockPayment } from "@/app/actions/orders";
@@ -9,6 +9,13 @@ import { processMockPayment } from "@/app/actions/orders";
 export default function CheckoutPage() {
     const params = useParams();
     const router = useRouter();
+    const searchParams = useSearchParams();
+
+    // Get transaction details from URL
+    const type = searchParams.get("type") as "purchase" | "borrow" || "purchase";
+    const amount = parseInt(searchParams.get("amount") || "1999");
+    const weeks = parseInt(searchParams.get("weeks") || "0");
+
     const [isProcessing, setIsProcessing] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [formData, setFormData] = useState({
@@ -22,12 +29,17 @@ export default function CheckoutPage() {
         e.preventDefault();
         setIsProcessing(true);
 
-        const result = await processMockPayment(params.id as string, 1999); // Hardcoded price for POC demo
+        const result = await processMockPayment(
+            params.id as string,
+            amount,
+            type,
+            type === "borrow" ? weeks * 7 : undefined
+        );
 
         if (result.success) {
             setIsSuccess(true);
             setTimeout(() => {
-                router.push("/profile"); // Assuming a profile page exists or will be added
+                router.push("/profile");
             }, 3000);
         } else {
             alert(result.error);
@@ -43,7 +55,7 @@ export default function CheckoutPage() {
                 </div>
                 <h1 className="text-3xl font-heading font-bold mb-4">Payment Successful!</h1>
                 <p className="text-text-secondary mb-8">
-                    Your order has been processed. You can now access your ebook in your library.
+                    Your {type} transaction has been processed. You can now access your ebook in your library.
                 </p>
                 <div className="animate-pulse text-sm text-primary font-medium">
                     Redirecting to your library...
@@ -64,7 +76,11 @@ export default function CheckoutPage() {
                 <div className="space-y-8">
                     <div>
                         <h1 className="text-3xl font-heading font-bold mb-2">Secure Checkout</h1>
-                        <p className="text-text-secondary">Complete your purchase to gain instant access.</p>
+                        <p className="text-text-secondary">
+                            {type === "borrow"
+                                ? `Borrowing this book for ${weeks} week${weeks > 1 ? 's' : ''}.`
+                                : "Securing lifetime access to this ebook."}
+                        </p>
                     </div>
 
                     <form onSubmit={handlePayment} className="space-y-6">
@@ -128,7 +144,7 @@ export default function CheckoutPage() {
                                     Processing Securely...
                                 </>
                             ) : (
-                                "PAY $19.99 NOW"
+                                `PAY $${(amount / 100).toFixed(2)} NOW`
                             )}
                         </button>
 
@@ -146,8 +162,12 @@ export default function CheckoutPage() {
 
                         <div className="space-y-4 mb-8">
                             <div className="flex justify-between text-text-secondary text-sm">
-                                <span>Digital Ebook (Lifetime Access)</span>
-                                <span className="text-text-primary font-medium">$19.99</span>
+                                <span>
+                                    {type === "borrow"
+                                        ? `Borrow Period (${weeks} week${weeks > 1 ? 's' : ''})`
+                                        : "Digital Ebook (Lifetime Access)"}
+                                </span>
+                                <span className="text-text-primary font-medium">${(amount / 100).toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-text-secondary text-sm">
                                 <span>Processing Fee</span>
@@ -156,7 +176,7 @@ export default function CheckoutPage() {
                             <div className="h-px bg-gray-200 mt-4" />
                             <div className="flex justify-between items-center pt-2">
                                 <span className="font-bold text-lg">Total</span>
-                                <span className="text-2xl font-heading font-bold text-primary">$19.99</span>
+                                <span className="text-2xl font-heading font-bold text-primary">${(amount / 100).toFixed(2)}</span>
                             </div>
                         </div>
 

@@ -15,8 +15,8 @@ export default async function ProfilePage() {
 
     const userId = session.user.id as string;
 
-    // Fetch Purchases
-    const userPurchases = await db.query.orders.findMany({
+    // Fetch All Orders (Purchases & Borrow Fees)
+    const userOrders = await db.query.orders.findMany({
         where: eq(orders.userId, userId),
         with: {
             book: true
@@ -24,7 +24,7 @@ export default async function ProfilePage() {
         orderBy: [desc(orders.createdAt)]
     });
 
-    // Fetch Borrowed Books
+    // Fetch Active Borrows (The actual rental records)
     const userBorrows = await db.query.lendingRecords.findMany({
         where: eq(lendingRecords.userId, userId),
         with: {
@@ -35,8 +35,8 @@ export default async function ProfilePage() {
 
     return (
         <div className="max-w-6xl mx-auto py-12 px-4">
-            <div className="flex items-center gap-6 mb-12 bg-white p-8 rounded-3xl border border-gray-100 shadow-sm">
-                <div className="w-20 h-20 bg-primary/10 text-primary rounded-2xl flex items-center justify-center">
+            <div className="flex items-center gap-6 mb-12 bg-white p-8 rounded-3xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
+                <div className="w-20 h-20 bg-primary/10 text-primary rounded-2xl flex items-center justify-center border border-primary/5">
                     <User size={40} />
                 </div>
                 <div>
@@ -49,23 +49,23 @@ export default async function ProfilePage() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                {/* Purchases Section */}
+                {/* Order History Section */}
                 <section>
                     <h2 className="text-2xl font-heading font-bold mb-6 flex items-center gap-3">
                         <ShoppingBag className="text-primary" size={24} />
-                        Purchase History
+                        Payment History
                     </h2>
                     <div className="space-y-4">
-                        {userPurchases.length === 0 ? (
+                        {userOrders.length === 0 ? (
                             <div className="bg-gray-50 rounded-2xl p-8 text-center border border-dashed border-gray-200">
-                                <p className="text-text-secondary">You haven't bought any ebooks yet.</p>
+                                <p className="text-text-secondary">No transaction history found.</p>
                                 <Link href="/" className="text-primary font-bold text-sm mt-2 inline-block hover:underline">
                                     Browse Bookstore →
                                 </Link>
                             </div>
                         ) : (
-                            userPurchases.map((order: any) => (
-                                <div key={order.id} className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex gap-4 hover:border-primary/20 transition-colors">
+                            userOrders.map((order: any) => (
+                                <div key={order.id} className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex gap-4 hover:border-primary/20 transition-all hover:shadow-md">
                                     <div className="w-16 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
                                         {order.book.imageUrl ? (
                                             <img src={order.book.imageUrl} alt={order.book.title} className="w-full h-full object-cover" />
@@ -76,10 +76,20 @@ export default async function ProfilePage() {
                                         )}
                                     </div>
                                     <div className="flex-1">
-                                        <h4 className="font-bold text-sm line-clamp-1">{order.book.title}</h4>
+                                        <div className="flex justify-between items-start mb-1">
+                                            <h4 className="font-bold text-sm line-clamp-1">{order.book.title}</h4>
+                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${order.type === 'purchase'
+                                                    ? 'bg-primary/10 text-primary'
+                                                    : 'bg-secondary/10 text-secondary'
+                                                }`}>
+                                                {order.type}
+                                            </span>
+                                        </div>
                                         <p className="text-xs text-text-secondary mb-2">{order.book.author}</p>
                                         <div className="flex items-center justify-between mt-auto">
-                                            <span className="text-xs font-medium text-gray-400">Purchased on {new Date(order.createdAt).toLocaleDateString()}</span>
+                                            <span className="text-[10px] font-medium text-gray-400">
+                                                {new Date(order.createdAt).toLocaleDateString()}
+                                            </span>
                                             <span className="text-sm font-bold text-primary">${(order.amount / 100).toFixed(2)}</span>
                                         </div>
                                     </div>

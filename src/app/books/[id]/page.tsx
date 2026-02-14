@@ -88,19 +88,19 @@ export default async function BookDetailPage({ params }: BookDetailPageProps) {
                                 ${(book.price / 100).toFixed(2)}
                             </span>
                         </div>
-                        <BorrowButton bookId={book.id} bookTitle={book.title} />
+                        <BorrowButton bookId={book.id} bookTitle={book.title} price={book.price} />
 
                         <div className="pt-2">
                             <Link
-                                href={`/checkout/${book.id}`}
-                                className="w-full bg-secondary text-white py-3 rounded-xl font-bold shadow-lg shadow-secondary/10 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                                href={`/checkout/${book.id}?type=purchase&amount=${book.price}`}
+                                className="w-full bg-primary text-white py-3 rounded-xl font-bold shadow-lg shadow-primary/10 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                             >
                                 BUY EBOOK FOR LIFETIME ACCESS
                             </Link>
                         </div>
 
                         <p className="text-[10px] text-center text-text-secondary">
-                            14-day borrowing period OR lifetime ownership available.
+                            Choose between a flexible borrowing period or lifetime ownership.
                         </p>
                     </div>
 

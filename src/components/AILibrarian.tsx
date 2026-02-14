@@ -6,6 +6,7 @@ import { chatWithLibrarian } from "@/app/actions/ai";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import ReactMarkdown from "react-markdown";
+import Link from "next/link";
 
 function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -134,7 +135,21 @@ export default function AILibrarian() {
                                 )}>
                                     {msg.role === "model" ? (
                                         <div className="prose prose-sm prose-blue max-w-none prose-p:leading-relaxed prose-li:my-0">
-                                            <ReactMarkdown>{msg.parts}</ReactMarkdown>
+                                            <ReactMarkdown
+                                                components={{
+                                                    a: ({ href, children }) => (
+                                                        <Link
+                                                            href={href || "#"}
+                                                            className="text-primary hover:underline font-bold decoration-2"
+                                                            onClick={() => setIsOpen(false)}
+                                                        >
+                                                            {children}
+                                                        </Link>
+                                                    ),
+                                                }}
+                                            >
+                                                {msg.parts}
+                                            </ReactMarkdown>
                                         </div>
                                     ) : (
                                         msg.parts

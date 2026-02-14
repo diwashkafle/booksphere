@@ -5,6 +5,15 @@ import { db } from "@/db";
 import { books, merchants } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { UTApi } from "uploadthing/server";
+
+const utapi = new UTApi();
+
+const getFileKey = (url: string) => {
+    if (!url) return null;
+    const parts = url.split("/");
+    return parts[parts.length - 1];
+};
 
 export async function createBook(formData: FormData) {
     const session = await auth();
@@ -68,19 +77,41 @@ export async function deleteBook(bookId: string) {
         throw new Error("Unauthorized");
     }
 
+    const book = await db.query.books.findFirst({
+        where: eq(books.id, bookId),
+    });
+
+    if (!book) throw new Error("Book not found");
+
     // If merchant, check ownership
     if (session.user.role === "merchant") {
         const merchant = await db.query.merchants.findFirst({
             where: eq(merchants.userId, session.user.id),
         });
 
-        if (!merchant) throw new Error("Merchant not found");
+        if (!merchant || book.merchantId !== merchant.id) {
+            throw new Error("Unauthorized to delete this book");
+        }
+    }
 
-        const book = await db.query.books.findFirst({
-            where: (books: any, { and, eq }: any) => and(eq(books.id, bookId), eq(books.merchantId, merchant.id)),
-        });
+    // Cleanup files from UploadThing
+    const fileKeys: string[] = [];
+    if (book.imageUrl) {
+        const key = getFileKey(book.imageUrl);
+        if (key) fileKeys.push(key);
+    }
+    if (book.ebookPdfUrl) {
+        const key = getFileKey(book.ebookPdfUrl);
+        if (key) fileKeys.push(key);
+    }
 
-        if (!book) throw new Error("Book not found or unauthorized");
+    if (fileKeys.length > 0) {
+        try {
+            await utapi.deleteFiles(fileKeys);
+        } catch (error) {
+            console.error("Failed to delete files from UploadThing:", error);
+            // We still proceed with DB deletion even if storage cleanup fails
+        }
     }
 
     await db.delete(books).where(eq(books.id, bookId));

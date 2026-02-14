@@ -185,6 +185,8 @@ export default function EditBookForm({ book }: { book: any }) {
                                 )}
                             </div>
                         )}
+                        <input type="hidden" name="imageUrl" value={imageUrl} />
+                        <input type="hidden" name="ebookPdfUrl" value={ebookPdfUrl} />
                     </div>
 
                     <button

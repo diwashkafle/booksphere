@@ -186,6 +186,8 @@ export default function NewBookPage() {
                                 )}
                             </div>
                         )}
+                        <input type="hidden" name="imageUrl" value={imageUrl} />
+                        <input type="hidden" name="ebookPdfUrl" value={ebookPdfUrl} />
                         <p className="text-[10px] text-gray-400 italic">Note: Borrowing is only enabled for books with an Ebook version.</p>
                     </div>
 

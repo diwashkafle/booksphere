@@ -2,7 +2,6 @@
   "/admin/page": "app/admin/page.js",
   "/page": "app/page.js",
   "/profile/page": "app/profile/page.js",
-  "/merchant/dashboard/page": "app/merchant/dashboard/page.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/books/[id]/reader/page": "app/books/[id]/reader/page.js"
+  "/books/[id]/reader/page": "app/books/[id]/reader/page.js",
+  "/merchant/dashboard/page": "app/merchant/dashboard/page.js"
 }

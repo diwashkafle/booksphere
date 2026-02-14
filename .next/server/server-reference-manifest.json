@@ -2,10 +2,22 @@
   "node": {
     "6faf73e319b0bf91be0b08111fed18504eb42902": {
       "workers": {
-        "app/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!"
+        "app/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!",
+        "app/_not-found/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!",
+        "app/books/[id]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Flending.ts%22%2C%5B%22borrowBook%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
-        "app/page": "action-browser"
+        "app/page": "action-browser",
+        "app/_not-found/page": "action-browser",
+        "app/books/[id]/page": "action-browser"
+      }
+    },
+    "437f4fe01d076268f016b841b31ce0b2e92acd2f": {
+      "workers": {
+        "app/books/[id]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Flending.ts%22%2C%5B%22borrowBook%22%5D%5D%2C%5B%22%2FUsers%2Fseva%2FDesktop%2Fprojects%2FBookspere%2Fsrc%2Fapp%2Factions%2Fai.ts%22%2C%5B%22chatWithLibrarian%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/books/[id]/page": "action-browser"
       }
     }
   },

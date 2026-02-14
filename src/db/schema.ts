@@ -42,3 +42,12 @@ export const lendingRecords = pgTable("lending_records", {
     expiryDate: timestamp("expiry_date").notNull(),
     status: text("status", { enum: ["active", "returned", "expired"] }).default("active").notNull(),
 });
+
+export const orders = pgTable("orders", {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id").references(() => users.id).notNull(),
+    bookId: uuid("book_id").references(() => books.id).notNull(),
+    amount: integer("amount").notNull(),
+    status: text("status", { enum: ["completed", "failed"] }).default("completed").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+});

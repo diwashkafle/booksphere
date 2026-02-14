@@ -4,6 +4,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { db } from "@/db";
 import { books } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { TFIDF } from "@/lib/tfidf";
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY || "");
 
@@ -26,9 +27,23 @@ export async function chatWithLibrarian(message: string, history: { role: string
             }
         });
 
-        const booksContext = allBooks.map((b: any) =>
-            `- ${b.title} by ${b.author} [Category: ${b.category}] ($${(b.price / 100).toFixed(2)})`
-        ).join("\n");
+        const booksContextFull = allBooks.map((b: any) =>
+            `- ${b.title} by ${b.author} [Category: ${b.category}] ($${(b.price / 100).toFixed(2)}) Description: ${b.description}`
+        );
+
+        // 2. Perform Hybrid Search (TF/IDF)
+        const tfidf = new TFIDF(booksContextFull);
+        const similarIndices = tfidf.getSimilarDocuments(message, 5);
+
+        // 3. Prioritize context
+        let focusedContext = "";
+        if (similarIndices.length > 0) {
+            focusedContext = "STRICT RECOMMENDATION CANDIDATES (Statistical Matches):\n" +
+                similarIndices.map(idx => booksContextFull[idx]).join("\n");
+        } else {
+            focusedContext = "ALL AVAILABLE BOOKS (No direct matches, use your best judgment):\n" +
+                booksContextFull.slice(0, 10).join("\n");
+        }
 
         const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
@@ -37,9 +52,8 @@ export async function chatWithLibrarian(message: string, history: { role: string
       
       ROLE: You are an expert curator with a warm, encouraging, and slightly sophisticated tone. You love helping people find the perfect companion in a book.
       
-      STRICT KNOWLEDGE LIMIT:
-      - You can ONLY recommend books from the following list of books currently available on our website:
-      ${booksContext}
+      HERE IS OUR COLLECTION (Focus on the candidates if provided):
+      ${focusedContext}
       
       - IF A USER ASKS FOR A BOOK NOT IN THIS LIST:
         1. Acknowledge that while that book is a classic/great choice, we don't currently have it in our local collection. 

@@ -13,12 +13,17 @@ const Navbar = () => {
 
     const navLinks = [
         { name: "Browse", href: "/" },
+        { name: "Profile", href: "/profile", auth: true },
         { name: "Merchant", href: "/merchant/dashboard", role: "merchant" },
         { name: "Admin", href: "/admin", role: "admin" },
     ];
 
     const filteredLinks = navLinks.filter(
-        (link) => !link.role || session?.user?.role === link.role || session?.user?.role === "admin"
+        (link) => {
+            if (link.auth && !session) return false;
+            if (link.role && session?.user?.role !== link.role && session?.user?.role !== "admin") return false;
+            return true;
+        }
     );
 
     return (

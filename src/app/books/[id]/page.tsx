@@ -1,9 +1,12 @@
 import { db } from "@/db";
 import { books } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, ne, and } from "drizzle-orm";
 import { notFound } from "next/navigation";
-import { Book, Calendar, ShieldCheck, Tag, User as UserIcon } from "lucide-react";
+import { Book, Calendar, ShieldCheck, Tag, User as UserIcon, Layers } from "lucide-react";
 import BorrowButton from "@/components/BorrowButton";
+import { TFIDF } from "@/lib/tfidf";
+import BookCard from "@/components/BookCard";
+import Link from "next/link";
 
 interface BookDetailPageProps {
     params: { id: string };
@@ -17,6 +20,24 @@ export default async function BookDetailPage({ params }: BookDetailPageProps) {
     if (!book) {
         notFound();
     }
+
+    // 2. Fetch candidates for "Similar Books"
+    const otherBooks = await db.query.books.findMany({
+        where: and(eq(books.status, "published"), ne(books.id, book.id)),
+    });
+
+    const currentDoc = `${book.title} ${book.author} ${book.description} ${book.category}`;
+    const otherDocs = otherBooks.map((b: any) => `${b.title} ${b.author} ${b.description} ${b.category}`);
+
+    const tfidf = new TFIDF([currentDoc, ...otherDocs]);
+    // index 0 is currentDoc, so we want similar docs from index 1+
+    const similarIndices = tfidf.getSimilarDocuments(currentDoc, 5);
+
+    // Adjust indices back to otherBooks (-1 because currentDoc was at index 0)
+    const similarBooks = similarIndices
+        .filter(idx => idx > 0)
+        .map(idx => otherBooks[idx - 1])
+        .slice(0, 4);
 
     return (
         <div className="max-w-6xl mx-auto py-10">
@@ -68,8 +89,18 @@ export default async function BookDetailPage({ params }: BookDetailPageProps) {
                             </span>
                         </div>
                         <BorrowButton bookId={book.id} bookTitle={book.title} />
+
+                        <div className="pt-2">
+                            <Link
+                                href={`/checkout/${book.id}`}
+                                className="w-full bg-secondary text-white py-3 rounded-xl font-bold shadow-lg shadow-secondary/10 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                            >
+                                BUY EBOOK FOR LIFETIME ACCESS
+                            </Link>
+                        </div>
+
                         <p className="text-[10px] text-center text-text-secondary">
-                            14-day borrowing period included. Ebook access is instant.
+                            14-day borrowing period OR lifetime ownership available.
                         </p>
                     </div>
 
@@ -95,6 +126,29 @@ export default async function BookDetailPage({ params }: BookDetailPageProps) {
                     </div>
                 </div>
             </div>
+
+            {/* Similar Books Section */}
+            {similarBooks.length > 0 && (
+                <div className="mt-20 pt-10 border-t border-gray-100">
+                    <h2 className="text-2xl font-bold font-heading mb-8 flex items-center gap-2">
+                        <Layers className="w-6 h-6 text-primary" />
+                        You Might Also Like
+                    </h2>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {similarBooks.map((b) => (
+                            <BookCard
+                                key={b.id}
+                                id={b.id}
+                                title={b.title}
+                                author={b.author}
+                                price={b.price}
+                                imageUrl={b.imageUrl}
+                                category={b.category}
+                            />
+                        ))}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

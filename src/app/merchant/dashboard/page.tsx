@@ -108,7 +108,7 @@ export default async function MerchantDashboard() {
                                             {book.category}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 font-medium">${(book.price / 100).toFixed(2)}</td>
+                                    <td className="px-6 py-4 font-medium">Rs. {(book.price / 100).toFixed(2)}</td>
                                     <td className="px-6 py-4">
                                         <span
                                             className={`text-[10px] font-bold uppercase px-2 py-1 rounded border ${book.status === "published"

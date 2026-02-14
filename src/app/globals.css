@@ -7,7 +7,13 @@
     @apply bg-background text-text-primary;
     font-family: 'Lato', 'Roboto', sans-serif;
   }
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-heading text-text-primary;
   }
 }
@@ -26,4 +32,44 @@
 
 .input-field {
   @apply w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation-fill-mode: forwards;
+}
+
+.fade-in {
+  animation-name: fadeIn;
+}
+
+.duration-500 {
+  animation-duration: 500ms;
+}
+
+.zoom-in {
+  @keyframes zoomIn {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  animation-name: zoomIn;
 }

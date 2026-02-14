@@ -4,29 +4,37 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { BookOpen } from "lucide-react";
+import { BookOpen, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
+        setLoading(true);
 
-        const result = await signIn("credentials", {
-            email,
-            password,
-            redirect: false,
-        });
+        try {
+            const result = await signIn("credentials", {
+                email,
+                password,
+                redirect: false,
+            });
 
-        if (result?.error) {
-            setError("Invalid email or password");
-        } else {
-            router.push("/");
-            router.refresh();
+            if (result?.error) {
+                setError("Invalid email or password");
+                setLoading(false);
+            } else {
+                router.push("/");
+                router.refresh();
+            }
+        } catch (err) {
+            setError("Something went wrong. Please try again.");
+            setLoading(false);
         }
     };
 
@@ -65,8 +73,19 @@ export default function LoginPage() {
 
                     {error && <p className="text-red-500 text-sm font-medium bg-red-50 p-3 rounded-lg border border-red-100">{error}</p>}
 
-                    <button type="submit" className="w-full btn-primary py-3 font-semibold shadow-lg shadow-primary/20">
-                        Sign In
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full btn-primary py-3 font-semibold shadow-lg shadow-primary/20 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                        {loading ? (
+                            <>
+                                <Loader2 className="w-5 h-5 animate-spin" />
+                                Signing in...
+                            </>
+                        ) : (
+                            "Sign In"
+                        )}
                     </button>
                 </form>
 

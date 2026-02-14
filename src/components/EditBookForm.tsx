@@ -3,7 +3,7 @@
 import { updateBook } from "@/app/actions/books";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ArrowLeft, Upload, Image as ImageIcon, X, Save } from "lucide-react";
+import { ArrowLeft, Upload, Image as ImageIcon, X, Save, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { UploadButton } from "@/utils/uploadthing";
 
@@ -96,13 +96,25 @@ export default function EditBookForm({ book }: { book: any }) {
                             <option value="Sci-Fi">Sci-Fi</option>
                             <option value="Mystery">Mystery</option>
                             <option value="Biography">Biography</option>
+                            <option value="History">History</option>
+                            <option value="Business">Business</option>
+                            <option value="Fantasy">Fantasy</option>
+                            <option value="Thriller">Thriller</option>
+                            <option value="Romance">Romance</option>
+                            <option value="Horror">Horror</option>
                             <option value="Personal Development">Personal Development</option>
+                            <option value="Poetry">Poetry</option>
+                            <option value="Self-Help">Self-Help</option>
+                            <option value="Travel">Travel</option>
+                            <option value="Cooking">Cooking</option>
+                            <option value="Science">Science</option>
+                            <option value="Technology">Technology</option>
                         </select>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-sm font-medium text-text-secondary mb-2">Price (USD)</label>
+                            <label className="block text-sm font-medium text-text-secondary mb-2">Price (Rs.)</label>
                             <input type="number" step="0.01" name="price" required defaultValue={book.price / 100} className="input-field" />
                         </div>
                     </div>
@@ -126,8 +138,17 @@ export default function EditBookForm({ book }: { book: any }) {
                         </div>
                     </div>
 
-                    <button type="submit" disabled={loading} className="w-full btn-primary py-3 font-semibold shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
-                        {loading ? "Updating..." : (
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full btn-primary py-3 font-semibold shadow-lg shadow-primary/20 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                        {loading ? (
+                            <>
+                                <Loader2 className="w-5 h-5 animate-spin" />
+                                Updating...
+                            </>
+                        ) : (
                             <>
                                 <Save className="w-5 h-5" />
                                 Save Changes

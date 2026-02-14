@@ -187,7 +187,7 @@ export default function CheckoutPage() {
                                     Processing Securely...
                                 </>
                             ) : (
-                                `PAY $${(amount / 100).toFixed(2)} NOW`
+                                `PAY Rs. ${(amount / 100).toFixed(2)} NOW`
                             )}
                         </button>
 
@@ -210,16 +210,16 @@ export default function CheckoutPage() {
                                         ? `Borrow Period (${weeks} week${weeks > 1 ? 's' : ''})`
                                         : format === "physical" ? "Physical Copy" : "Digital Ebook (Lifetime)"}
                                 </span>
-                                <span className="text-text-primary font-medium">${(amount / 100).toFixed(2)}</span>
+                                <span className="text-text-primary font-medium">Rs. ${(amount / 100).toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between text-text-secondary text-sm">
                                 <span>Processing Fee</span>
-                                <span className="text-text-primary font-medium">$0.00</span>
+                                <span className="text-text-primary font-medium">Rs. 0.00</span>
                             </div>
                             <div className="h-px bg-gray-200 mt-4" />
                             <div className="flex justify-between items-center pt-2">
                                 <span className="font-bold text-lg">Total</span>
-                                <span className="text-2xl font-heading font-bold text-primary">${(amount / 100).toFixed(2)}</span>
+                                <span className="text-2xl font-heading font-bold text-primary">Rs. {(amount / 100).toFixed(2)}</span>
                             </div>
                         </div>
 

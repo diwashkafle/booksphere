@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Trash2, Edit } from "lucide-react";
+import { Trash2, Edit, Loader2 } from "lucide-react";
 import { deleteBook } from "@/app/actions/books";
 import Link from "next/link";
 
@@ -40,7 +40,7 @@ export default function MerchantBookActions({ bookId }: MerchantBookActionsProps
                 className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all disabled:opacity-50"
                 title="Delete Book"
             >
-                <Trash2 size={18} />
+                {isDeleting ? <Loader2 size={18} className="animate-spin text-red-600" /> : <Trash2 size={18} />}
             </button>
         </div>
     );

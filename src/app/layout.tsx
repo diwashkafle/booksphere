@@ -32,7 +32,7 @@ export default function RootLayout({
             <body className={`${inter.variable} ${poppins.variable} ${lato.variable} antialiased`}>
                 <Providers>
                     <Navbar />
-                    <main className="min-h-screen pt-20 px-4 md:px-8 max-w-7xl mx-auto">
+                    <main className="min-h-screen pt-20 px-4 md:px-8 max-w-7xl mx-auto animate-in fade-in duration-500">
                         {children}
                     </main>
                     <footer className="py-10 text-center text-text-secondary border-t border-gray-100 bg-white mt-20">

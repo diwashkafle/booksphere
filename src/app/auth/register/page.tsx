@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { BookOpen, User, Building, Shield } from "lucide-react";
+import { BookOpen, User, Building, Shield, Loader2 } from "lucide-react";
 
 export default function RegisterPage() {
     const [formData, setFormData] = useState({
@@ -112,8 +112,19 @@ export default function RegisterPage() {
 
                     {error && <p className="text-red-500 text-sm font-medium bg-red-50 p-3 rounded-lg border border-red-100">{error}</p>}
 
-                    <button type="submit" disabled={loading} className="w-full btn-primary py-3 font-semibold shadow-lg shadow-primary/20 disabled:opacity-50">
-                        {loading ? "Creating Account..." : "Register Now"}
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full btn-primary py-3 font-semibold shadow-lg shadow-primary/20 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                        {loading ? (
+                            <>
+                                <Loader2 className="w-5 h-5 animate-spin" />
+                                Creating Account...
+                            </>
+                        ) : (
+                            "Register Now"
+                        )}
                     </button>
                 </form>
 

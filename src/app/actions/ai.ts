@@ -30,7 +30,7 @@ export async function chatWithLibrarian(message: string, history: { role: string
         });
 
         const booksContextFull = allBooks.map((b: any) =>
-            `- [ID: ${b.id}] ${b.title} by ${b.author} [Category: ${b.category}] ($${(b.price / 100).toFixed(2)}) 
+            `- [ID: ${b.id}] ${b.title} by ${b.author} [Category: ${b.category}] (Rs. ${(b.price / 100).toFixed(2)}) 
               Formats: ${[b.isEbook ? "Ebook" : null, b.isPhysical ? "Physical" : null].filter(Boolean).join(", ")}
               Description: ${b.description}`
         );

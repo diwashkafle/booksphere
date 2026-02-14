@@ -43,7 +43,7 @@ export default async function BookDetailPage({ params }: BookDetailPageProps) {
         <div className="max-w-6xl mx-auto py-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
                 {/* Book Cover */}
-                <div className="bg-gray-100 rounded-3xl aspect-[3/4] overflow-hidden shadow-2xl sticky top-24">
+                <div className="bg-gray-100 rounded-3xl aspect-[3/4] overflow-hidden shadow-xl sticky top-24 max-w-sm mx-auto w-full">
                     {book.imageUrl ? (
                         <img src={book.imageUrl} alt={book.title} className="w-full h-full object-cover" />
                     ) : (
@@ -85,7 +85,7 @@ export default async function BookDetailPage({ params }: BookDetailPageProps) {
                         <div className="flex items-center justify-between">
                             <span className="text-text-secondary font-medium">Standard Price</span>
                             <span className="text-3xl font-heading font-bold text-primary">
-                                ${(book.price / 100).toFixed(2)}
+                                Rs. {(book.price / 100).toFixed(2)}
                             </span>
                         </div>
 

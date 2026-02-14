@@ -94,11 +94,11 @@ export default async function Home({ searchParams }: HomeProps) {
                         )}
                     </div>
                     <div className="flex gap-2">
-                        {["Fiction", "Non-Fiction", "Sci-Fi", "Mystery"].map((cat) => (
+                        {["Fiction", "Non-Fiction", "Sci-Fi", "Mystery", "Biography", "Business", "History", "Fantasy", "Thriller", "Romance", "Horror", "Poetry", "Self-Help", "Travel", "Cooking", "Art", "Science", "Technology", "Health", "Parenting", "Spirituality", "Comics", "Young Adult"].map((cat) => (
                             <a
                                 key={cat}
                                 href={`/?category=${cat}`}
-                                className={`text-xs font-bold px-3 py-1.5 rounded-full border transition-all ${category === cat
+                                className={`text-xs font-bold px-3 py-1.5 rounded-full border transition-all whitespace-nowrap ${category === cat
                                     ? "bg-primary text-white border-primary"
                                     : "bg-white text-text-secondary border-gray-200 hover:border-primary hover:text-primary"
                                     }`}

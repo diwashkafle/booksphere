@@ -1,6 +1,7 @@
 {
-  "/merchant/books/new/page": "app/merchant/books/new/page.js",
-  "/profile/page": "app/profile/page.js",
-  "/page": "app/page.js",
-  "/merchant/dashboard/page": "app/merchant/dashboard/page.js"
+  "/admin/page": "app/admin/page.js",
+  "/books/[id]/page": "app/books/[id]/page.js",
+  "/merchant/books/edit/[id]/page": "app/merchant/books/edit/[id]/page.js",
+  "/merchant/dashboard/page": "app/merchant/dashboard/page.js",
+  "/page": "app/page.js"
 }

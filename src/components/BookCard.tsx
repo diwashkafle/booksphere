@@ -44,7 +44,7 @@ const BookCard = ({ id, title, author, price, imageUrl, category }: BookCardProp
                 <h3 className="font-heading font-semibold text-lg line-clamp-1">{title}</h3>
                 <p className="text-text-secondary text-sm mb-4 line-clamp-1">{author}</p>
                 <div className="flex items-center justify-between">
-                    <span className="font-bold text-primary font-heading">${(price / 100).toFixed(2)}</span>
+                    <span className="font-bold text-primary font-heading">Rs. {(price / 100).toFixed(2)}</span>
                     <Link href={`/books/${id}`} className="text-xs font-bold text-text-secondary hover:text-primary transition-colors">
                         BORROW →
                     </Link>
